@@ -1,0 +1,5 @@
+
+
+[submodule "submodules/kuksa-proto"]
+	path = submodules/kuksa-proto
+	url = https://github.com/eclipse-kuksa/kuksa-proto.git

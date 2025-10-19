@@ -1,0 +1,7 @@
+log_*
+*_pb2*.py*
+venv
+**/.vssclient_history
+**/__pycache__
+**/*.egg-info
+kuksa-client/dist

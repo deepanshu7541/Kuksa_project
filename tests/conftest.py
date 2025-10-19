@@ -1,7 +1,12 @@
+import os
 import pytest
+from kuksa_client.grpc import VSSClient
 
-# Define the 'extension' marker for grouping your new tests (NX1)
-def pytest_configure(config):
-    config.addinivalue_line(
-        "markers", "extension: marks tests as part of the project extension validation suite (NX1)"
-    )
+HOST = os.getenv("DATABROKER_HOST", "127.0.0.1")
+PORT = int(os.getenv("DATABROKER_PORT", "55556"))
+
+@pytest.fixture(scope="module")
+def client():
+    c = VSSClient(HOST, PORT)
+    c.connect()
+    yield c

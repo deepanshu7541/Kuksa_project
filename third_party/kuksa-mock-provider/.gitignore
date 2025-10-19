@@ -1,0 +1,9 @@
+__pycache__/
+.mypy_cache/
+.venv/
+*.pyo
+mock_service.egg-info/
+html/
+doc/.generated-files.txt
+doc/mkdocs.yml
+mock_service.log

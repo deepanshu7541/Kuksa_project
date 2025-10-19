@@ -13,6 +13,7 @@ The project demonstrates the use of Python-based microservices integrated with t
 ```bash
 git clone https://github.com/<your-group-repo>/KUKSA-Anomaly-Detection.git
 cd KUKSA-Anomaly-Detection
+```bash
 ### 🔑 Core Features Implemented:
 
 1.  **Speed Anomaly Monitor:** Logs a **`SPEEDING`** alert if `Vehicle.Speed` exceeds a user-defined threshold (`--max-speed`).
@@ -23,7 +24,7 @@ cd KUKSA-Anomaly-Detection
 ---
 
 ## 🛠️ How to Set Up and Run the Project
-
+```bash
 ### 1️⃣ Prerequisites and Setup
 Ensure you have **Docker** and **Docker Compose** installed. You will also need **Python 3.8+** and the necessary dependencies (e.g., `kuksa-client`).
 

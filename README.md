@@ -11,8 +11,8 @@ The project demonstrates the use of Python-based microservices integrated with t
 
 ### 1️Clone the Repository
 ```bash
-git clone https://github.com/<your-group-repo>/KUKSA-Anomaly-Detection.git
-cd KUKSA-Anomaly-Detection
+git clone https://github.com/deepanshu7541/Kuksa_project.git
+cd Kuksa_project
 ```
 ### 🔑 Core Features Implemented:
 
@@ -31,3 +31,29 @@ Ensure you have **Docker** and **Docker Compose** installed. You will also need 
 ### 2️⃣ Start KUKSA Services
 Navigate to your main KUKSA directory (where your `docker-compose.yml` is located) and start the Data Broker and Mock Provider in the background:
 ```
+
+---
+
+## Phase one Overview
+
+The phase one focuses on the Speed ​​Anomaly Monitor system, it also includes several **test and validation scripts** to ensure full system functionality with the Eclipse KUKSA Databroker:
+
+| Script | Purpose | Key Features |
+|--------|----------|---------------|
+| **kuksa_client_test.py** | Validates the KUKSA client connection and data retrieval. | Connects to the Databroker, fetches `Vehicle.Speed`, and subscribes for 5 live updates. |
+| **kuksa_metadata_test.py** | Verifies metadata accuracy for vehicle signals. | Checks that `Vehicle.Speed` has correct data type (`FLOAT`) and unit (`km/h`). |
+| **kuksa_read_speed.py** | Tests signal dynamics. | Reads speed twice and confirms if the signal value changes over time. |
+| **kuksa_subscribe_test.py** | Demonstrates continuous subscription capability. | Subscribes to `Vehicle.Speed` for 10 updates to confirm stable streaming. |
+| **kuksa_actuator_test.py** | Demonstrates actuator control functionality. | Sends and confirms write commands to control `Vehicle.Body.Windshield.Front.Wiping.System.TargetPosition`. |
+| **kuksa_anomaly_monitor.py** | Main anomaly detection module. | Periodically polls vehicle speed, detects overspeed events, and logs alerts to `alerts.csv`. |
+
+### Core Package: `speedMonitor/`
+Contains the reusable modules that power the system logic:
+- `core.py`: Implements the `SpeedMonitor` and `Thresholds` classes for anomaly detection.
+- `io.py`: Implements the `AlertSink` class for CSV logging.
+- `main.py`: Provides the main execution interface.
+
+### Tests Directory: `tests/`
+Includes pytest-based scripts for integration and extension validation.
+
+---

@@ -1,40 +1,16 @@
 name: Overspeed Integration Tests
-
-on:
-  push:
-    branches: [ "**" ]
-  pull_request:
-    branches: [ "**" ]
-
-
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
-
-permissions:
-  contents: read
+on: [push, pull_request]
 
 jobs:
   tests:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
 
       - name: Install dependencies
         run: |
@@ -42,16 +18,28 @@ jobs:
           pip install -r requirements.txt
           pip install pytest
 
-      - name: Show pytest markers (debug)
-        run: pytest --markers || true
+      # Start Databroker + Mock Provider (docker)
+      - name: Docker Compose up
+        run: |
+          docker compose -f docker-compose.yaml up -d
+          # wait until port 55556 is ready
+          for i in {1..40}; do
+            nc -z 127.0.0.1 55556 && echo "Databroker ready" && break
+            echo "waiting databroker..."; sleep 1
+          done
 
-      - name: Run overspeed + integration tests
+      - name: Run tests (integration + overspeed)
         run: |
           mkdir -p reports
-          pytest --maxfail=1 -q -m "integration or overspeed" --junitxml=reports/it_overspeed.xml
+          pytest -vv --tb=short -m "integration or overspeed" \
+                 --junitxml=reports/it_overspeed.xml
 
-      - name: Upload test report
-        uses: actions/upload-artifact@v4
+      - name: Teardown
+        if: always()
+        run: docker compose -f docker-compose.yaml down
+
+      - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: it_overspeed_report
           path: reports/it_overspeed.xml

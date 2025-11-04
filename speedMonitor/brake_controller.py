@@ -1,4 +1,3 @@
-# speedMonitor/brake_controller.py
 import time
 from kuksa_client.grpc import VSSClient, Datapoint
 
@@ -33,5 +32,5 @@ class AutoBrakeSystem:
                     print(f"[BRAKE] Error setting speed: {e}")
                 time.sleep(1)
 
-        print("[BRAKE] ✅ Vehicle speed normalized.")
+        print("[BRAKE] Vehicle speed normalized.")
         self.active = False

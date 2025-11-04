@@ -1,4 +1,3 @@
-# speedMonitor/core.py
 import time
 from kuksa_client.grpc import VSSClient
 from speedMonitor.brake_controller import AutoBrakeSystem
@@ -19,7 +18,6 @@ def monitor_speed(ip="127.0.0.1", port=55556, threshold=120, hold=2, interval=1)
                 if speed is not None:
                     print(f"[MON] Vehicle.Speed = {speed:.2f}")
 
-                    # Detect overspeed and trigger brake
                     if speed > threshold:
                         if overspeed_start is None:
                             overspeed_start = time.time()
@@ -30,12 +28,12 @@ def monitor_speed(ip="127.0.0.1", port=55556, threshold=120, hold=2, interval=1)
                         overspeed_start = None
 
                 else:
-                    print("[MON] No Vehicle.Speed data available yet.")
+                    print("No Vehicle.Speed data available yet.")
 
                 time.sleep(interval)
 
             except KeyboardInterrupt:
-                print("\n[MON] Monitoring stopped by user.")
+                print("\nMonitoring stopped by user.")
                 break
             except Exception as e:
                 print(f"[MON] Error: {e}")

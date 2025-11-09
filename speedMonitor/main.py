@@ -1,4 +1,3 @@
-# speedMonitor/main.py
 from speedMonitor.core import monitor_speed
 
 if __name__ == "__main__":

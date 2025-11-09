@@ -1,4 +1,3 @@
-# speedMonitor/speed_simulator.py
 import time
 import random
 from kuksa_client.grpc import VSSClient, Datapoint

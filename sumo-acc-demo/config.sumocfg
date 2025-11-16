@@ -1,0 +1,16 @@
+<configuration>
+  <input>
+    <net-file value="road.net.xml"/>
+    <route-files value="routes.rou.xml"/>
+  </input>
+
+  <time>
+    <begin value="0"/>
+    <end value="60"/>        <!-- 跑 60s，确保有足够数据 -->
+    <step-length value="0.2"/>
+  </time>
+
+  <output>
+    <fcd-output value="fcd.xml"/>
+  </output>
+</configuration>

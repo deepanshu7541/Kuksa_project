@@ -7,8 +7,8 @@
   <route id="r0" edges="e0"/>
 
   <!-- lead：t=1s go -->
-  <vehicle id="lead" type="car" route="r0" depart="1.0"/>
+  <vehicle id="lead" type="car" route="r0" depart="1.0" departPos="5.0" departSpeed="10.0"/>
 
   <!-- ego：t=3s follow  -->
-  <vehicle id="ego"  type="car" route="r0" depart="3.0"/>
+  <vehicle id="ego"  type="car" route="r0" depart="3.0" departPos="0.0" departSpeed="0.0"/>
 </routes>

@@ -57,3 +57,40 @@ Contains the reusable modules that power the system logic:
 Includes pytest-based scripts for integration and extension validation.
 
 ---
+
+## Part B – Fixtures & Continuous Integration  
+*Implemented by Quang Thong Phung*
+
+This phase focused on developing **reusable test infrastructure** and automating continuous integration for the KUKSA Speed Monitor project.
+
+### 🔧 Fixtures & Test Infrastructure
+A dedicated `tests/conftest.py` file was implemented to provide reusable **pytest fixtures** for integration and overspeed validation.  
+These fixtures dynamically create monitoring and alert-logging components and generate simulated vehicle-speed streams for consistent testing.
+
+**Key Fixtures:**
+| Fixture | Description |
+|----------|--------------|
+| `make_monitor()` | Factory that returns a `SpeedMonitor(Thresholds)` instance. |
+| `make_sink()` | Factory that returns an `AlertSink` instance bound to a temporary CSV file. |
+| `tmp_alerts_csv` | Creates an isolated temporary CSV file for every test run. |
+| `speed_stream_*` | Provides multiple simulated speed sequences (safe, boundary, overspeed, spiky, dirty, multi). |
+
+All test markers (`integration`, `overspeed`, and `extension`) were formally registered inside `pytest.ini` to ensure compatibility with automated CI runs.
+
+### ⚙️ Continuous Integration (CI) with GitHub Actions
+A complete CI pipeline was integrated in  
+`.github/workflows/it-overspeed.yml`.
+
+**Pipeline Summary:**
+1. Checks out the repository.  
+2. Sets up Python 3.11 and installs all dependencies.  
+3. Launches the KUKSA Databroker and Mock Provider via Docker Compose.  
+4. Executes pytest with the markers `integration or overspeed`.  
+5. Uploads the JUnit XML report artifact (`reports/it_overspeed.xml`).  
+6. Tears down all containers after testing.
+
+The workflow was successfully executed on **Ubuntu-latest runners**, confirming that all tests passed:
+
+pytest -m "integration or overspeed" -q
+...... # All tests passed
+---

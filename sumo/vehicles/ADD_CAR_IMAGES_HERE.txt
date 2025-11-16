@@ -1,0 +1,30 @@
+Instructions for Adding Custom Car Images
+==========================================
+
+To use custom car images instead of the default SUMO shapes:
+
+1. Place your car images in this directory (sumo/vehicles/)
+   - Recommended format: PNG with transparent background
+   - Recommended size: 64x64 to 128x128 pixels
+   - Top-down view of cars works best
+
+2. Update highway.rou.xml:
+   - Uncomment the vType with imgFile attribute
+   - Comment out the vType without imgFile
+   - Update the imgFile path to match your image filename
+
+Example:
+   <vType id="car" ... imgFile="vehicles/car_red.png"/>
+
+3. In SUMO GUI:
+   - Go to View Settings > Vehicle Shape
+   - Select "raster images" option
+   - Vehicles will now display using your custom images
+
+Where to get car images:
+- Search for "top down car png" on free image sites
+- Use car clipart from openclipart.org or similar
+- Create simple car silhouettes in any image editor
+
+Note: The current setup uses built-in "passenger/sedan" shape which looks more car-like than arrows.
+

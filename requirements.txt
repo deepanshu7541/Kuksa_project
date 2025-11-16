@@ -2,3 +2,5 @@
 kuksa-client==0.5.0
 # Testing framework
 pytest==7.4.3
+# SUMO Traffic Simulation
+sumolib==1.19.0

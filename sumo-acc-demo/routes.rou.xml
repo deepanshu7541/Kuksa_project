@@ -6,9 +6,9 @@
 
   <route id="r0" edges="e0"/>
 
-  <!-- 领车 lead：t=1s 出发 -->
+  <!-- lead：t=1s go -->
   <vehicle id="lead" type="car" route="r0" depart="1.0"/>
 
-  <!-- 自车 ego：t=3s 出发（后发追前） -->
+  <!-- ego：t=3s follow  -->
   <vehicle id="ego"  type="car" route="r0" depart="3.0"/>
 </routes>

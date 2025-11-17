@@ -1,0 +1,5 @@
+<net version="1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <edge id="e1" from="n1" to="n2" numLanes="1" speed="25"/>
+    <junction id="n1" x="0" y="0" type="priority"/>
+    <junction id="n2" x="1000" y="0" type="priority"/>
+</net>

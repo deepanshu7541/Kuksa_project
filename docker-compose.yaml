@@ -1,16 +1,43 @@
 services:
   databroker:
-    image: ghcr.io/eclipse-kuksa/kuksa-databroker:main
-    # Remove the 'version: "3"' line to clear the WARN message
-    # Add any necessary configuration from your original file:
+    image: ghcr.io/eclipse/kuksa.val/databroker:latest
+    container_name: kuksa-databroker
     ports:
-      - "55556:55555" # Example port mapping
+      - "55556:55555"   # host:container  → host listens on 55556
+    volumes:
+      - ./adas/adas_vss.json:/app/vss/adas_vss.json
+      - ./config/databroker-config.json:/app/config/databroker-config.json
 
   mock-provider:
     image: ghcr.io/eclipse-kuksa/kuksa-mock-provider/mock-provider:main
     depends_on:
       - databroker
     environment:
-      # Ensure VDB_ADDRESS points to the Databroker service name inside the Docker network
-      - VDB_ADDRESS=databroker:55555
-      # Add other environment variables if needed
+      - VDB_ADDRESS=databroker:55555   # container-to-container uses internal port
+
+# services:
+#   databroker:
+#     image: ghcr.io/eclipse/kuksa.val/databroker:latest
+#     container_name: kuksa-databroker
+#     ports:
+#       - "55556:55556"
+#     volumes:
+#       - ./adas/adas_vss.json:/app/vss/adas_vss.json
+#       - ./config/databroker-config.json:/app/config/databroker-config.json
+      
+# # services:
+# #   databroker:
+# #     image: ghcr.io/eclipse-kuksa/kuksa-databroker:main
+# #     # Remove the 'version: "3"' line to clear the WARN message
+# #     # Add any necessary configuration from your original file:
+# #     ports:
+# #       - "55556:55555" # Example port mapping
+
+#   mock-provider:
+#     image: ghcr.io/eclipse-kuksa/kuksa-mock-provider/mock-provider:main
+#     depends_on:
+#       - databroker
+#     environment:
+#       # Ensure VDB_ADDRESS points to the Databroker service name inside the Docker network
+#       - VDB_ADDRESS=databroker:55555
+#       # Add other environment variables if needed

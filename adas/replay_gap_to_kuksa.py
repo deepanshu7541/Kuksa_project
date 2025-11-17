@@ -1,7 +1,8 @@
+# adas_csv/replay_gap_to_kuksa.py
 import csv
 import time
 import sys
-from decide import decide_target
+from decide import decide_target  # reuse your decide logic (put a copy under adas_csv or adjust import)
 try:
     from kuksa_client.grpc import VSSClient
     KUKSA_AVAILABLE = True
@@ -10,9 +11,9 @@ except Exception:
 
 BROKER_IP = "127.0.0.1"
 BROKER_PORT = 55556
-SIG_SPEED = "Vehicle.Speed"
-SIG_DISTANCE = "Vehicle.FrontDistance"
-SIG_TARGET = "Vehicle.TargetSpeed"
+SIG_SPEED     = "Vehicle.Speed"
+SIG_DISTANCE  = "Vehicle.ADAS.DistanceToLead"
+SIG_TARGET    = "Vehicle.ADAS.TargetSpeed"
 
 def replay(gap_csv, publish_to_kuksa=False, step_s=0.1):
     if publish_to_kuksa and not KUKSA_AVAILABLE:

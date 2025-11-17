@@ -1,0 +1,10 @@
+{
+  "sources": [
+    {
+      "path": "/vss/vss_rel_4.0.json"
+    },
+    {
+      "path": "/vss/adas_vss.json"
+    }
+  ]
+}

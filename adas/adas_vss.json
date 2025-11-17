@@ -1,0 +1,16 @@
+{
+  "Vehicle": {
+    "ADAS": {
+      "DistanceToLead": {
+        "datatype": "float",
+        "description": "Gap distance between ego and lead car",
+        "type": "sensor"
+      },
+      "TargetSpeed": {
+        "datatype": "float",
+        "description": "Desired target speed computed by ADAS controller",
+        "type": "attribute"
+      }
+    }
+  }
+}

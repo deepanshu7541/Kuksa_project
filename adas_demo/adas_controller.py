@@ -1,4 +1,3 @@
-# adas_demo/adas_controller.py
 import time
 from kuksa_client.grpc import VSSClient
 

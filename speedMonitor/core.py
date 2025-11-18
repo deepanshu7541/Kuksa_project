@@ -1,5 +1,3 @@
-import csv
-import os
 import time
 from dataclasses import dataclass
 from typing import List, Any
@@ -13,10 +11,9 @@ SIG_SPEED = "Vehicle.Speed"
 
 @dataclass
 class Alert:
-    timestamp: str
-    signal: str
-    value: float
-    threshold: float
+    kind: str
+    speed: float
+    reason: str
 
 
 class Thresholds:
@@ -26,7 +23,7 @@ class Thresholds:
 
 class SpeedMonitor:
     """
-    Realtime speed monitor (start) + offline batch processor (on_speed).
+    Realtime speed monitor (start) + offline processor (on_speed).
     """
     def __init__(
         self,
@@ -34,7 +31,7 @@ class SpeedMonitor:
         hold: float = 2.0,
         interval: float = 1.0,
         safe_speed: float = 80.0,
-        alerts_csv_path: str | None = None,
+        alerts_csv_path: str | None = None,  # kept for compatibility, not used
     ):
         self.thresholds = thresholds
         self.hold = hold
@@ -43,12 +40,12 @@ class SpeedMonitor:
 
         self.overspeed_start = None
         self.brake_system = AutoBrakeSystem(
-            threshold=self.thresholds.max_speed, reduction_rate=10
+            threshold=self.thresholds.max_speed,
+            reduction_rate=10,
         )
 
+        # tests handle file writing via sink.write(), so we ignore alerts_csv_path
         self.alerts_csv_path = alerts_csv_path
-        if self.alerts_csv_path:
-            print(f"Alerts will be logged to: {self.alerts_csv_path}")
 
     # ------------------------------------------------------------------
     # Offline processing for tests
@@ -56,7 +53,7 @@ class SpeedMonitor:
     def on_speed(self, samples: Any) -> List[Alert]:
         alerts: List[Alert] = []
 
-        # Normalize to iterable
+        # Normalize input into an iterable
         if isinstance(samples, IterableABC) and not isinstance(
             samples, (str, bytes, dict)
         ):
@@ -66,10 +63,8 @@ class SpeedMonitor:
 
         for item in iterable:
             try:
-                # extract speed + timestamp
                 if isinstance(item, (int, float)):
                     speed = float(item)
-                    ts = time.time()
                 elif isinstance(item, dict):
                     if "speed" in item:
                         speed = float(item["speed"])
@@ -77,30 +72,19 @@ class SpeedMonitor:
                         speed = float(item["value"])
                     else:
                         continue
-                    ts = item.get("timestamp", time.time())
                 else:
                     continue
             except (TypeError, ValueError):
                 continue
 
-            # threshold check (> only)
+            # boundary_equals_threshold: only > threshold triggers alert
             if speed > self.thresholds.max_speed:
                 alert = Alert(
-                    timestamp=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(ts)),
-                    signal=SIG_SPEED,
-                    value=speed,
-                    threshold=self.thresholds.max_speed,
+                    kind="overspeed",
+                    speed=speed,
+                    reason=f"speed {speed} > threshold {self.thresholds.max_speed}",
                 )
                 alerts.append(alert)
-
-        # write CSV if required
-        if self.alerts_csv_path and alerts:
-            os.makedirs(os.path.dirname(self.alerts_csv_path), exist_ok=True)
-            with open(self.alerts_csv_path, "w", newline="") as f:
-                writer = csv.writer(f)
-                writer.writerow(["timestamp", "signal", "value", "threshold"])
-                for a in alerts:
-                    writer.writerow([a.timestamp, a.signal, a.value, a.threshold])
 
         return alerts
 
@@ -155,6 +139,7 @@ def monitor_speed(
 ):
     thresholds = Thresholds(threshold)
     SpeedMonitor(thresholds, hold, interval).start(ip, port)
+
 
 
 

@@ -80,7 +80,7 @@ class SpeedMonitor:
             # boundary_equals_threshold: only > threshold triggers alert
             if speed > self.thresholds.max_speed:
                 alert = Alert(
-                    kind="overspeed",
+                    kind="SPEEDING",
                     speed=speed,
                     reason=f"speed {speed} > threshold {self.thresholds.max_speed}",
                 )

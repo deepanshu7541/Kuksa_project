@@ -2,7 +2,8 @@ import csv
 import os
 import time
 from dataclasses import dataclass
-from typing import Iterable, List, Any
+from typing import List, Any
+from collections.abc import Iterable as IterableABC
 
 from kuksa_client.grpc import VSSClient
 from speedMonitor.brake_controller import AutoBrakeSystem
@@ -49,13 +50,21 @@ class SpeedMonitor:
         if self.alerts_csv_path:
             print(f"Alerts will be logged to: {self.alerts_csv_path}")
 
-   
-    # Offline processing for integration tests
-    #Fix bug on method on_speed
-    def on_speed(self, samples: Iterable[Any]) -> List[Alert]:
+    # ------------------------------------------------------------------
+    # Offline processing for tests
+    # ------------------------------------------------------------------
+    def on_speed(self, samples: Any) -> List[Alert]:
         alerts: List[Alert] = []
 
-        for item in samples:
+        # Normalize to iterable
+        if isinstance(samples, IterableABC) and not isinstance(
+            samples, (str, bytes, dict)
+        ):
+            iterable = samples
+        else:
+            iterable = [samples]
+
+        for item in iterable:
             try:
                 # extract speed + timestamp
                 if isinstance(item, (int, float)):
@@ -146,6 +155,7 @@ def monitor_speed(
 ):
     thresholds = Thresholds(threshold)
     SpeedMonitor(thresholds, hold, interval).start(ip, port)
+
 
 
 # import time

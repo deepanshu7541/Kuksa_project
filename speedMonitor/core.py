@@ -82,7 +82,7 @@ class SpeedMonitor:
                 alert = Alert(
                     kind="SPEEDING",
                     speed=speed,
-                    reason=f"speed {speed} > threshold {self.thresholds.max_speed}",
+                    reason=f"speed {speed} exceeds max threshold {self.thresholds.max_speed}",
                 )
                 alerts.append(alert)
 

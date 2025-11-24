@@ -11,9 +11,13 @@ except Exception:
 
 BROKER_IP = "127.0.0.1"
 BROKER_PORT = 55556
-SIG_SPEED     = "Vehicle.Speed"
-SIG_DISTANCE  = "Vehicle.ADAS.DistanceToLead"
-SIG_TARGET    = "Vehicle.ADAS.TargetSpeed"
+# SIG_SPEED     = "Vehicle.Speed"
+# SIG_DISTANCE  = "Vehicle.ADAS.DistanceToLead"
+# SIG_TARGET    = "Vehicle.ADAS.TargetSpeed"
+SIG_SPEED    = "Vehicle.Speed"
+SIG_DISTANCE = "Vehicle.CurrentLocation.Longitude"   # placeholder for distance
+SIG_TARGET   = "Vehicle.Acceleration.Longitudinal"   # placeholder for target
+
 
 def replay(gap_csv, publish_to_kuksa=False, step_s=0.1):
     if publish_to_kuksa and not KUKSA_AVAILABLE:

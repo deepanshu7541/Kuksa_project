@@ -1,10 +1,16 @@
 {
-  "sources": [
-    {
-      "path": "/vss/vss_rel_4.0.json"
-    },
-    {
-      "path": "/vss/adas_vss.json"
+  "Vehicle": {
+    "ADAS": {
+      "DistanceToLead": {
+        "datatype": "float",
+        "type": "sensor",
+        "description": "Distance to lead vehicle"
+      },
+      "TargetSpeed": {
+        "datatype": "float",
+        "type": "actuator",
+        "description": "Target speed for ego vehicle"
+      }
     }
-  ]
+  }
 }

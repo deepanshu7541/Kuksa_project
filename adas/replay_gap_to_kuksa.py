@@ -1,8 +1,7 @@
-# adas_csv/replay_gap_to_kuksa.py
 import csv
 import time
 import sys
-from decide import decide_target  # reuse your decide logic (put a copy under adas_csv or adjust import)
+from decide import decide_target
 try:
     from kuksa_client.grpc import VSSClient
     KUKSA_AVAILABLE = True
@@ -15,8 +14,8 @@ BROKER_PORT = 55556
 # SIG_DISTANCE  = "Vehicle.ADAS.DistanceToLead"
 # SIG_TARGET    = "Vehicle.ADAS.TargetSpeed"
 SIG_SPEED    = "Vehicle.Speed"
-SIG_DISTANCE = "Vehicle.CurrentLocation.Longitude"   # placeholder for distance
-SIG_TARGET   = "Vehicle.Acceleration.Longitudinal"   # placeholder for target
+SIG_DISTANCE = "Vehicle.CurrentLocation.Longitude"
+SIG_TARGET   = "Vehicle.Acceleration.Longitudinal"
 
 
 def replay(gap_csv, publish_to_kuksa=False, step_s=0.1):
@@ -45,9 +44,7 @@ def replay(gap_csv, publish_to_kuksa=False, step_s=0.1):
                 payload = {SIG_SPEED: float(ego_speed)}
                 if dist is not None:
                     payload[SIG_DISTANCE] = float(dist)
-                # write current speed & distance
                 client.set_current_values(payload)
-                # write controller target
                 client.set_current_values({SIG_TARGET: float(target)})
 
             time.sleep(step_s)

@@ -1,7 +1,0 @@
-<nodes>
-  <node id="n0" x="0" y="0"/>
-  <node id="n1" x="1000" y="0"/>
-</nodes>
-<edges>
-  <edge id="e0" from="n0" to="n1" priority="1" numLanes="1" speed="30"/>
-</edges>
